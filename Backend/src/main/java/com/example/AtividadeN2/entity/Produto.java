@@ -1,10 +1,7 @@
 package com.example.AtividadeN2.entity;
 
 import com.example.AtividadeN2.dto.ProdutoRequestDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +20,9 @@ public class Produto {
     private String nome;
     private BigDecimal preco;
     private String sabor;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
     public static Produto toEntity(ProdutoRequestDTO dto) {
