@@ -11,7 +11,7 @@ public record ProdutoResponseDTO(
             String nome,
             BigDecimal preco,
             String sabor,
-            Categoria categoria
+            UUID categoria
 ){
     public static ProdutoResponseDTO toDto(Produto produto){
         return new ProdutoResponseDTO(
@@ -19,7 +19,7 @@ public record ProdutoResponseDTO(
                 produto.getNome(),
                 produto.getPreco(),
                 produto.getSabor(),
-                produto.getCategoria()
+                produto.getCategoriaId()
                 );
     }
 }

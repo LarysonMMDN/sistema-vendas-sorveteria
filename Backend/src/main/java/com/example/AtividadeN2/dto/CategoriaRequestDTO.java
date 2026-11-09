@@ -11,10 +11,10 @@ public record CategoriaRequestDTO(
     public static Categoria toEntity(CategoriaRequestDTO dto){
         Categoria categoria = new Categoria();
 
-        categoria.setNome(dto.nome);
-        categoria.setDescricao(dto.descricao);
-        categoria.setTipo(dto.tipo);
-        categoria.setStatus(dto.status);
+        categoria.setNome(dto.nome());
+        categoria.setDescricao(dto.descricao());
+        categoria.setTipo(dto.tipo());
+        categoria.setStatus(dto.status());
 
         return categoria;
     }

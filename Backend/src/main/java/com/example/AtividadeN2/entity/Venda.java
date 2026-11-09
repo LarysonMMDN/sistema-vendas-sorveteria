@@ -1,11 +1,15 @@
 package com.example.AtividadeN2.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
 public class Venda {
     @Id
@@ -16,5 +20,8 @@ public class Venda {
     private String status;
 
     @ManyToOne()
-    private Usuario usuario;
+    private UUID usuarioId;
+
+    @ManyToOne()
+    private UUID produtoId;
 }

@@ -23,17 +23,6 @@ public class Produto {
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
-    private Categoria categoria;
+    private UUID categoriaId;
 
-    public static Produto toEntity(ProdutoRequestDTO dto) {
-        Produto produto = new Produto();
-
-        produto.setNome(dto.nome());
-        produto.setCategoria(dto.categoria());
-        produto.setPreco(dto.preco());
-        produto.setSabor(dto.sabor());
-
-        return  produto;
-
-    }
 }

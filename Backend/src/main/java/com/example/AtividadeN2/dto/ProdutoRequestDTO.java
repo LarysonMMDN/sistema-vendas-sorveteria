@@ -10,7 +10,7 @@ public record ProdutoRequestDTO(
     String nome,
     BigDecimal preco,
     String sabor,
-    Categoria categoria
+    UUID categoriaId
 ){
     public static Produto toEntity(ProdutoRequestDTO dto) {
         Produto produto = new Produto();
@@ -18,6 +18,7 @@ public record ProdutoRequestDTO(
         produto.setNome(dto.nome());
         produto.setPreco(dto.preco());
         produto.setSabor(dto.sabor());
+        produto.setCategoriaId(dto.categoriaId());
 
         return produto;
     }
