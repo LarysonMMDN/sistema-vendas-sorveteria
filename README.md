@@ -145,4 +145,54 @@ Endereço local:
 http://localhost:8080
 ```
 
-### 6.3. Execut
+### 6.3. Executar o Frontend
+
+Abra outro terminal e acesse a pasta do frontend:
+
+```bash
+cd frozen-ice-frontend
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Inicie o ambiente de desenvolvimento:
+
+```bash
+npm run dev
+```
+
+Após a inicialização, o Vite disponibilizará o endereço local da aplicação no terminal, geralmente:
+
+```text
+http://localhost:5173
+```
+
+Acesse esse endereço pelo navegador para utilizar o sistema.
+
+### 6.4. Executar os testes
+
+Para executar os testes automatizados do backend, acesse a pasta `frozen-ice-backend` e execute:
+
+```powershell
+.\mvnw.cmd test
+```
+
+O Maven realizará a execução dos testes configurados no projeto e apresentará os resultados no terminal.
+
+## 7. Observações
+
+- O backend deve estar em execução para que o frontend consiga realizar as operações que dependem da API.
+- O banco de dados precisa estar configurado e disponível antes da inicialização do backend.
+- As configurações de ambiente e credenciais não devem ser compartilhadas publicamente.
+- O arquivo `.env.example`, quando utilizado, serve como referência para a configuração das variáveis de ambiente.
+- Os arquivos gerados durante a execução, como `node_modules`, `target` e `dist`, não precisam ser enviados ao repositório.
+
+## 8. Considerações Finais
+
+O FROZEN-ICE tem como objetivo oferecer uma solução integrada para o gerenciamento de uma sorveteria, facilitando o controle das operações diárias e centralizando informações importantes para a administração do estabelecimento.
+
+O desenvolvimento do projeto também proporcionou a aplicação prática de conceitos de programação, integração entre frontend e backend, persistência de dados, autenticação, controle de acesso e testes de software.
