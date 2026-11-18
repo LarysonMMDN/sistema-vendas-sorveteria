@@ -5,6 +5,7 @@ import com.example.AtividadeN2.entity.Produto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -20,6 +21,10 @@ public record ProdutoRequestDTO(
 
         String sabor,
 
+        @NotNull(message = "Estoque deve ser informado")
+        @PositiveOrZero(message = "Estoque não pode ser negativo")
+        Integer estoque,
+
         @NotNull(message = "Categoria deve ser informada")
         UUID categoriaId
 ){
@@ -29,6 +34,7 @@ public record ProdutoRequestDTO(
         produto.setNome(dto.nome());
         produto.setPreco(dto.preco());
         produto.setSabor(dto.sabor());
+        produto.setEstoque(dto.estoque());
 
         return produto;
     }

@@ -19,6 +19,7 @@ public class Produto {
     private String nome;
     private BigDecimal preco;
     private String sabor;
+    private Integer estoque = 0;
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")

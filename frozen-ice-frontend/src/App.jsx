@@ -11,16 +11,18 @@ import Configuracoes from "./pages/Configuracoes";
 import Vendas from "./pages/Vendas";
 import Clientes from "./pages/Clientes";
 import Usuarios from "./pages/Usuarios";
+import Categorias from "./pages/Categorias";
 import HistoricoVendas from "./pages/HistoricoVendas";
 
 export default function App() {
   const [activePage, setActivePage] = useState("Dashboard");
   const [usuarioLogado, setUsuarioLogado] = useState({
-    id: "desenvolvimento",
-    nome: "Administrador",
-    email: "admin@frozenice.com",
-    perfil: "Administrador",
-  });
+      id: "desenvolvimento",
+      nome: "Administrador",
+      email: "admin@frozenice.com",
+      perfil: "Administrador",
+    });
+
 
   function handleLogout() {
     fazerLogout();
@@ -39,6 +41,9 @@ export default function App() {
 
       case "Produtos":
         return <Produtos />;
+
+        case "Categorias":
+          return <Categorias />;
 
       case "Vendas":
         return <Vendas />;

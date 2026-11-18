@@ -19,7 +19,7 @@ public record VendaResponseDTO(
                 venda.getFormaPagamento(),
                 venda.getValorTotal(),
                 venda.getStatus(),
-                venda.getUsuario().getId(),
+                venda.getCliente().getId(),
                 venda.getProduto().getId()
         );
     }

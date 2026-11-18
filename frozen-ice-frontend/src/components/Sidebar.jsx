@@ -8,12 +8,14 @@ import {
   ChartNoAxesCombined,
   Settings,
   LogOut,
-  Snowflake
+  Snowflake,
+  Tags
 } from "lucide-react";
 
 const menuItems = [
   { name: "Dashboard", icon: LayoutDashboard },
   { name: "Produtos", icon: IceCream },
+  { name: "Categorias", icon: Tags },
   { name: "Vendas", icon: ShoppingCart },
   { name: "Clientes", icon: Users },
   { name: "Usuários", icon: Users },

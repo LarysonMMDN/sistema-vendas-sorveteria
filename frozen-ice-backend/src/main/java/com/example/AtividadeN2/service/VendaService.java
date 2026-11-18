@@ -2,9 +2,11 @@ package com.example.AtividadeN2.service;
 
 import com.example.AtividadeN2.dto.VendaRequestDTO;
 import com.example.AtividadeN2.dto.VendaResponseDTO;
+import com.example.AtividadeN2.entity.Cliente;
 import com.example.AtividadeN2.entity.Produto;
 import com.example.AtividadeN2.entity.Usuario;
 import com.example.AtividadeN2.entity.Venda;
+import com.example.AtividadeN2.repository.ClienteRepository;
 import com.example.AtividadeN2.repository.ProdutoRepository;
 import com.example.AtividadeN2.repository.UsuarioRepository;
 import com.example.AtividadeN2.repository.VendaRepository;
@@ -17,16 +19,16 @@ import java.util.UUID;
 public class VendaService {
 
     private final VendaRepository vendaRepository;
-    private final UsuarioRepository usuarioRepository;
+    private final ClienteRepository clienteRepository;
     private final ProdutoRepository produtoRepository;
 
     public VendaService(
             VendaRepository vendaRepository,
-            UsuarioRepository usuarioRepository,
+            ClienteRepository clienteRepository,
             ProdutoRepository produtoRepository) {
 
         this.vendaRepository = vendaRepository;
-        this.usuarioRepository = usuarioRepository;
+        this.clienteRepository = clienteRepository;
         this.produtoRepository = produtoRepository;
     }
 
@@ -34,13 +36,13 @@ public class VendaService {
 
         Venda venda = VendaRequestDTO.toEntity(dto);
 
-        Usuario usuario = usuarioRepository.findById(dto.usuarioId())
+        Cliente cliente = clienteRepository.findById(dto.usuarioId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         Produto produto = produtoRepository.findById(dto.produtoId())
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-        venda.setUsuario(usuario);
+        venda.setCliente(cliente);
         venda.setProduto(produto);
 
         Venda salva = vendaRepository.save(venda);

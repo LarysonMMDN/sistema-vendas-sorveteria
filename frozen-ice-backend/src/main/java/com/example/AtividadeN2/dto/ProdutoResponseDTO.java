@@ -11,15 +11,19 @@ public record ProdutoResponseDTO(
         String nome,
         BigDecimal preco,
         String sabor,
-        UUID categoriaId
-){
-    public static ProdutoResponseDTO toDto(Produto produto){
+        Integer estoque,
+        UUID categoriaId,
+        String categoriaNome
+) {
+    public static ProdutoResponseDTO toDto(Produto produto) {
         return new ProdutoResponseDTO(
                 produto.getId(),
                 produto.getNome(),
                 produto.getPreco(),
                 produto.getSabor(),
-                produto.getCategoria().getId()
+                produto.getEstoque(),
+                produto.getCategoria().getId(),
+                produto.getCategoria().getNome()
         );
     }
 }

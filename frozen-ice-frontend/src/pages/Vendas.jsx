@@ -36,6 +36,11 @@ export default function Vendas({ usuario, onVendaConcluida }) {
         listarProdutosParaVenda(), listarClientesParaVenda()
       ]);
       setProdutos(Array.isArray(ps) ? ps : []);
+      console.log("PRODUTOS RECEBIDOS:", ps);
+      console.log("DETALHES DO PRIMEIRO PRODUTO:", ps[0]);
+      console.log("CAMPOS DO PRODUTO:", Object.keys(ps[0] || {}));
+      console.log("PREÇO RECEBIDO:", ps[0]?.preco);
+      console.log("TIPO DO PREÇO:", typeof ps[0]?.preco);
       setClientes(Array.isArray(cs) ? cs : []);
     } catch (e) {
       setErro(e?.response?.data?.message || e?.response?.data?.mensagem ||

@@ -48,6 +48,7 @@ public class ProdutoService {
         produto.setNome(dto.nome());
         produto.setSabor(dto.sabor());
         produto.setPreco(dto.preco());
+        produto.setEstoque(dto.estoque());
         produto.setCategoria(categoria);
 
         return produtoRepository.save(produto);
