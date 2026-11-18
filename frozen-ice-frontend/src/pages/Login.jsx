@@ -154,10 +154,10 @@ async function entrar(event) {
 
         <div className="login-demo">
           <strong>Acesso para demonstração</strong>
-          <span>Administrador: admin@frozenice.com</span>
+          <span>Administrador: admin@email.com</span>
           <span>Senha: admin123</span>
-          <span>Atendente: ana@frozenice.com</span>
-          <span>Senha: ana12345</span>
+          <span>Atendente: atendente@email.com</span>
+          <span>Senha: atendente123</span>
         </div>
 
         <footer className="login-footer">

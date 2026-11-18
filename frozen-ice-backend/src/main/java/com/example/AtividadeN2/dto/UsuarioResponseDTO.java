@@ -9,6 +9,7 @@ public record UsuarioResponseDTO(
         UUID id,
         String nome,
         String email,
+        String perfil,
         LocalDateTime dataCadastro
 ) {
     public static UsuarioResponseDTO toDto(Usuario usuario){
@@ -16,6 +17,7 @@ public record UsuarioResponseDTO(
                 usuario.getId(),
                 usuario.getNome(),
                 usuario.getEmail(),
+                usuario.getPerfil(),
                 usuario.getDataCadastro()
         );
     }

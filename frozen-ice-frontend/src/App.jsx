@@ -1,8 +1,14 @@
+
 import { useState } from "react";
 
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
-import { fazerLogout } from "./services/authService";
+import {
+  fazerLogout,
+  obterUsuario,
+  obterToken,
+} from "./services/authService";
+
 import Login from "./pages/Login";
 import Notificacoes from "./pages/Notificacoes";
 import Dashboard from "./pages/Dashboard";
@@ -16,13 +22,18 @@ import HistoricoVendas from "./pages/HistoricoVendas";
 
 export default function App() {
   const [activePage, setActivePage] = useState("Dashboard");
-  const [usuarioLogado, setUsuarioLogado] = useState({
-      id: "desenvolvimento",
-      nome: "Administrador",
-      email: "admin@frozenice.com",
-      perfil: "Administrador",
-    });
 
+  const [usuarioLogado, setUsuarioLogado] = useState(() => {
+    const token = obterToken();
+    const usuario = obterUsuario();
+
+    if (token && usuario) {
+      return usuario;
+    }
+
+    fazerLogout();
+    return null;
+  });
 
   function handleLogout() {
     fazerLogout();
@@ -32,6 +43,7 @@ export default function App() {
 
   function handleLogin(usuario) {
     setUsuarioLogado(usuario);
+    setActivePage("Dashboard");
   }
 
   function renderPage() {
@@ -42,11 +54,11 @@ export default function App() {
       case "Produtos":
         return <Produtos />;
 
-        case "Categorias":
-          return <Categorias />;
+      case "Categorias":
+        return <Categorias />;
 
       case "Vendas":
-        return <Vendas />;
+        return <Vendas usuario={usuarioLogado} />;
 
       case "Clientes":
         return <Clientes />;
@@ -61,12 +73,12 @@ export default function App() {
         return <Notificacoes />;
 
       case "Configurações":
-  return (
-    <Configuracoes
-      usuario={usuarioLogado}
-      onAtualizarUsuario={setUsuarioLogado}
-    />
-  );
+        return (
+          <Configuracoes
+            usuario={usuarioLogado}
+            onAtualizarUsuario={setUsuarioLogado}
+          />
+        );
 
       default:
         return (
@@ -95,7 +107,9 @@ export default function App() {
         <Header
           usuario={usuarioLogado}
           onLogout={handleLogout}
-          onOpenNotifications={() => setActivePage("Notificações")}
+          onOpenNotifications={() =>
+            setActivePage("Notificações")
+          }
         />
 
         {renderPage()}

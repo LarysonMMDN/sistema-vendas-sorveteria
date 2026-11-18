@@ -8,7 +8,7 @@ const api = axios.create({
   },
 });
 
-// Envia o token de autenticação quando existir.
+// Envia o token automaticamente.
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("frozen_ice_token");
 
@@ -19,12 +19,13 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Se a API responder 401, a sessão não está mais autorizada.
+// Limpa a sessão quando a autenticação expirar.
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem("frozen_ice_token");
+      localStorage.removeItem("frozen_ice_usuario");
     }
 
     return Promise.reject(error);

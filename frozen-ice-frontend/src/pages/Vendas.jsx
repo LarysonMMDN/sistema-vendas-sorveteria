@@ -37,10 +37,11 @@ export default function Vendas({ usuario, onVendaConcluida }) {
       ]);
       setProdutos(Array.isArray(ps) ? ps : []);
       console.log("PRODUTOS RECEBIDOS:", ps);
-      console.log("DETALHES DO PRIMEIRO PRODUTO:", ps[0]);
-      console.log("CAMPOS DO PRODUTO:", Object.keys(ps[0] || {}));
-      console.log("PREÇO RECEBIDO:", ps[0]?.preco);
+      console.log("PRIMEIRO PRODUTO:", ps[0]);
+      console.log("PREÇO:", ps[0]?.preco);
       console.log("TIPO DO PREÇO:", typeof ps[0]?.preco);
+      console.log("ESTOQUE:", ps[0]?.estoque);
+      console.log("ID:", ps[0]?.id);
       setClientes(Array.isArray(cs) ? cs : []);
     } catch (e) {
       setErro(e?.response?.data?.message || e?.response?.data?.mensagem ||
@@ -49,6 +50,14 @@ export default function Vendas({ usuario, onVendaConcluida }) {
       setCarregando(false);
     }
   }
+
+  useEffect(() => {
+      console.log("CARRINHO ATUALIZADO:", carrinho);
+      console.log("TOTAL:", carrinho.reduce(
+          (s, i) => s + i.preco * i.quantidade,
+          0
+      ));
+  }, [carrinho]);
 
   useEffect(() => { carregarCatalogo(); }, []);
 
@@ -64,6 +73,11 @@ export default function Vendas({ usuario, onVendaConcluida }) {
   const total = carrinho.reduce((s, i) => s + i.preco * i.quantidade, 0);
 
   function adicionar(produto) {
+      console.log("PRODUTO COMPLETO:", JSON.stringify(produto, null, 2));
+      console.log("PREÇO ORIGINAL:", produto.preco);
+      console.log("PREÇO FINAL:", getPreco(produto));
+      console.log("ESTOQUE ORIGINAL:", produto.estoque);
+      console.log("ESTOQUE FINAL:", getEstoque(produto));
     const id = getId(produto);
     const estoque = getEstoque(produto);
     const existente = carrinho.find(i => String(i.id) === String(id));
@@ -77,7 +91,7 @@ export default function Vendas({ usuario, onVendaConcluida }) {
       if (item) return atual.map(i => String(i.id) === String(id)
         ? { ...i, quantidade: i.quantidade + 1 } : i);
       return [...atual, {
-        id, nome: getNome(produto), preco: getPreco(produto),
+        id, nome: getNome(produto), preco: getPreco(produto), quantidade: 1,
         estoque, emoji: produto.emoji ?? "🍦",
         cor: produto.cor ?? "#f1e8fb",
         categoria: produto.categoria?.nome ?? produto.categoriaNome ?? produto.categoria ?? "Sorvetes"
@@ -97,32 +111,63 @@ export default function Vendas({ usuario, onVendaConcluida }) {
 
   async function finalizarVenda() {
     if (!carrinho.length) return;
+
     if (!clienteId) {
       setErro("Selecione um cliente antes de finalizar a venda.");
       return;
     }
-    setEnviando(true); setErro(""); setMensagem("");
+
+    if (!usuario?.id) {
+      setErro("Não foi possível identificar o usuário responsável.");
+      return;
+    }
+
+    setEnviando(true);
+    setErro("");
+    setMensagem("");
+
     try {
       const payload = {
-        clienteId: Number(clienteId),
         formaPagamento: pagamento,
-        itens: carrinho.map(i => ({ produtoId: Number(i.id), quantidade: i.quantidade }))
+        clienteId: clienteId,
+        usuarioId: usuario.id,
+        itens: carrinho.map(item => ({
+          produtoId: item.id,
+          quantidade: item.quantidade
+        }))
       };
-      // O servidor deve identificar o caixa pelo token autenticado.
-      if (usuario?.id != null) payload.usuarioId = Number(usuario.id);
+
+      console.log("VENDA ENVIADA:", payload);
+
       const venda = await registrarVenda(payload);
+
       setCarrinho([]);
       setClienteId("");
-      setMensagem(`Venda registrada com sucesso${venda?.id ? `! Pedido #${venda.id}.` : "!"}`);
+
+      setMensagem(
+        `Venda registrada com sucesso! Pedido #${venda.id}`
+      );
+
       await carregarCatalogo();
       onVendaConcluida?.(venda);
+
     } catch (e) {
-      setErro(e?.response?.data?.message || e?.response?.data?.mensagem ||
-        "Não foi possível registrar a venda. Confira estoque e conexão com o servidor.");
+      console.error(
+        "ERRO AO FINALIZAR VENDA:",
+        e.response?.data || e
+      );
+
+      setErro(
+        e?.response?.data?.message ||
+        e?.response?.data?.mensagem ||
+        "Não foi possível registrar a venda."
+      );
+
     } finally {
       setEnviando(false);
     }
   }
+
 
   return (
     <motion.div className="sales-page" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
